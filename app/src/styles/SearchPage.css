@@ -1,0 +1,85 @@
+.SearchPage {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .SearchPage h1 {
+    font-size: 2em;
+    color: #282c34;
+    margin-bottom: 20px;
+  }
+  
+  label {
+    margin-right: 10px;
+    font-size: 1.2em;
+    color: #282c34;
+  }
+  
+  input {
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 1em;
+  }
+  
+  button {
+    padding: 5px 10px;
+    font-size: 1em;
+    background-color: #61dafb;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #21a1f1;
+  }
+  
+  .results {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .result-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    margin: 10px 0;
+    color: #333;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .result-card p {
+    margin: 0;
+    font-size: 1em;
+    line-height: 1.5;
+  }
+  
+  .similarity-bar {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+  
+  .similarity-bar-fill {
+    height: 10px;
+    background-color: #4caf50;
+  }
+  
+  .similarity-text {
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: #555;
+  }
+  
+  pre {
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: pre-wrap;
+  }
