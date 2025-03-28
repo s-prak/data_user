@@ -3,6 +3,7 @@ const cors = require("cors");
 const TfIdf = require("tf-idf-search");
 const axios = require("axios");
 const { decrypt } = require("./decrypt");
+const { encrypt } = require("./encrypt");
 
 const app = express();
 const port = 5002;
@@ -52,6 +53,32 @@ app.get("/query", async (req, res) => {
     const searchResults = tfidfModel.rankDocumentsByQuery(query);
     console.log("🔎 Search results:", searchResults);
 
+    const fileTracker = tfidfIndex.tracker;
+
+    const formattedResults = await Promise.all(searchResults.map(async (result) => {
+      const fileEntry = fileTracker.find(entry => entry.index === result.index);
+      if (!fileEntry) return null;
+
+      // Extract filename without extension
+      const filename = fileEntry.document.split('/').pop().split('.').slice(0, -1).join('.');
+      const encryptedFilename = encrypt(filename);
+
+      console.log(`📂 Fetching content for: ${filename} (Encrypted: ${encryptedFilename})`);
+      
+      try {
+        const contentResponse = await axios.get(`http://localhost:8080/document/get-doc/${encryptedFilename}`);
+        return {
+          filename,
+          content: decrypt(contentResponse.data.doc),
+          similarityIndex: result.similarityIndex
+        };
+      } catch (error) {
+        console.error(`❌ Failed to fetch content for ${filename}`, error.message);
+        return { filename, content: "Error fetching content", similarityIndex: result.similarityIndex };
+      }
+    }));
+
+    console.log("📁 Final search results:", formattedResults.filter(Boolean));
     // 7️⃣ Return the results
     res.json({ query, results: searchResults });
   } catch (error) {
