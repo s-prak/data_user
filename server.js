@@ -66,7 +66,8 @@ app.get("/query", async (req, res) => {
       console.log(`📂 Fetching content for: ${filename} (Encrypted: ${encryptedFilename})`);
       
       try {
-        const contentResponse = await axios.get(`http://localhost:8080/document/get-doc/${encryptedFilename}`);
+        const encodedFilename = encodeURIComponent(encryptedFilename);
+        const contentResponse = await axios.get(`http://localhost:8080/document/get-doc?docId=${encodedFilename}`);
         return {
           filename,
           content: decrypt(contentResponse.data.doc),
@@ -80,7 +81,7 @@ app.get("/query", async (req, res) => {
 
     console.log("📁 Final search results:", formattedResults.filter(Boolean));
     // 7️⃣ Return the results
-    res.json({ query, results: searchResults });
+    res.json({ query, results: formattedResults.filter(Boolean) });
   } catch (error) {
     console.error("❌ Error processing query:", error);
     res.status(500).json({ error: "Failed to process query", details: error.message });
