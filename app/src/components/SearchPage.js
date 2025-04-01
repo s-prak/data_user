@@ -5,22 +5,16 @@ import axios from 'axios';
 function SearchPage() {
   const [inputValue, setInputValue] = useState('');
   const [results, setResults] = useState([]);
+  const [downloads, setDownloads] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.get(`http://localhost:5002/query?query=${encodeURIComponent(inputValue)}`);
-      // 🔹 Filter out results with similarityIndex = 0 before sorting
-      const filteredResults = res.data.results.filter(result => result.similarityIndex > 0); 
-
-      // 🔹 Sort the remaining results in descending order
+      const filteredResults = res.data.results.filter(result => result.similarityIndex > 0);
       const sortedResults = filteredResults.sort((a, b) => b.similarityIndex - a.similarityIndex);
-
-
-      // Fetch document content for each result
       const updatedResults = await Promise.all(sortedResults.map(async (result) => {
         try {
-          
           return {
             filename: result.filename,
             content: result.content,
@@ -40,6 +34,20 @@ function SearchPage() {
     } catch (error) {
       console.error('Error fetching data:', error);
       setResults([{ error: 'Error fetching data' }]);
+    }
+  };
+
+  const handleDownload = async (result) => {
+    try {
+      await axios.post('http://localhost:5002/download', {
+        filename: result.filename,
+        content: result.content
+      });
+      setDownloads(prevDownloads => [...prevDownloads, result]);
+      alert(`File ${result.filename} downloaded successfully.`);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      alert('Error downloading file.');
     }
   };
 
@@ -73,6 +81,7 @@ function SearchPage() {
                   ></div>
                 </div>
                 <p className="similarity-text">Similarity: {Math.round(result.similarityIndex * 100)}%</p>
+                <button onClick={() => handleDownload(result)}>Download</button>
               </>
             )}
           </div>

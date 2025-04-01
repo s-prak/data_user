@@ -1,0 +1,35 @@
+.ViewDownloadsPage {
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .ViewDownloadsPage h1 {
+    font-size: 2em;
+    color: #282c34;
+    margin-bottom: 20px;
+  }
+  
+  .downloads {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .download-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    margin: 10px 0;
+    color: #333;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .download-card pre {
+    background: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
+    white-space: pre-wrap;
+  }
