@@ -27,7 +27,7 @@ app.get("/query", async (req, res) => {
   try {
     // 1️⃣ Make a GET request to retrieve the index
     console.log("📡 Fetching inverted index from backend...");
-    const response = await axios.get("http://65.0.131.153:8080/inverted-index/get-index");
+    const response = await axios.get("http://13.203.157.202:8080/inverted-index/get-index");
     
     // 2️⃣ Extract the "index" from the response
     const encryptedIndex = response.data.index;
@@ -71,7 +71,7 @@ app.get("/query", async (req, res) => {
       
       try {
         const encodedFilename = encodeURIComponent(encryptedFilename);
-        const contentResponse = await axios.get(`http://65.0.131.153:8080/document/get-doc?docId=${encodedFilename}`);
+        const contentResponse = await axios.get(`http://13.203.157.202:8080/document/get-doc?docId=${encodedFilename}`);
         return {
           filename,
           content: decrypt(contentResponse.data.doc),
